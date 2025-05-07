@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import EmotionFilter from "../../components/EmotionFilter";
 import DiaryCard from "../../components/DiaryCard";
-import "./ExplorePage.scss";
 
 const ExplorePage = () => {
   const [allDiaries, setAllDiaries] = useState([]);
