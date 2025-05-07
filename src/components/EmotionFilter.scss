@@ -1,0 +1,12 @@
+.emotion-filter {
+  margin-bottom: 1.5rem;
+
+  .emotion-tag {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #e6e6f0;
+    }
+  }
+}
