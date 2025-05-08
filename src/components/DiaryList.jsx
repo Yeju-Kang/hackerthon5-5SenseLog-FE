@@ -1,59 +1,78 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DiaryItem from "./DiaryItem";
-import EmotionFilter from "./EmotionFilter"; // 필터 컴포넌트 불러오기
+import EmotionFilter from "./EmotionFilter";
 
-const initialMockDiaries = [
-  {
-    id: 1,
-    date: "2025-05-09",
-    content: "오늘 햇살이 따뜻해서 기분이 좋았어!",
-    tags: ["기쁨", "감사"],
-    message: "오늘 하루를 따뜻하게 느끼셨군요. 그런 날은 오래 기억에 남아요 ☀️",
-  },
-  {
-    id: 2,
-    date: "2025-05-08",
-    content: "너무 바빠서 정신이 하나도 없었어.",
-    tags: ["피곤함", "불안"],
-    message:
-      "바쁜 하루 속에서도 당신은 잘 해내고 있어요. 잠시 숨을 고르는 것도 괜찮아요 💜",
-  },
-];
-
-const DiaryList = () => {
-  const [diaries, setDiaries] = useState(initialMockDiaries);
+const DiaryList = ({ diaries = [], hasNextPage, onLoadMore }) => {
   const [selectedTag, setSelectedTag] = useState(null);
+  const [filtered, setFiltered] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // 필터링 처리
+  useEffect(() => {
+    if (selectedTag) {
+      setFiltered(diaries.filter((d) => d.emotionTags?.includes(selectedTag)));
+    } else {
+      setFiltered(diaries);
+    }
+  }, [diaries, selectedTag]);
 
   const handleDelete = (id) => {
     if (window.confirm("정말 삭제하시겠어요?")) {
-      setDiaries((prev) => prev.filter((diary) => diary.id !== id));
+      setFiltered((prev) => prev.filter((d) => d.id !== id));
     }
   };
 
-  const filteredDiaries = selectedTag
-    ? diaries.filter((d) => d.tags.includes(selectedTag))
-    : diaries;
+  const handleLoadMore = async () => {
+    setLoading(true);
+    await onLoadMore(); // 부모에서 전달된 fetch 함수
+    setLoading(false);
+  };
 
   return (
     <div className="diary-list-wrapper">
       <EmotionFilter selectedTag={selectedTag} onSelect={setSelectedTag} />
 
-      {filteredDiaries.length === 0 ? (
+      {filtered.length === 0 && !loading ? (
         <p className="has-text-grey">작성된 일기가 없습니다.</p>
       ) : (
-        <ul className="diary-list">
-          {filteredDiaries.map((diary) => (
-            <li key={diary.id}>
-              <DiaryItem
-                date={diary.date}
-                content={diary.content}
-                tags={diary.tags}
-                message={diary.message}
-                onDelete={() => handleDelete(diary.id)}
-              />
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul className="diary-list">
+            {filtered.map((diary) => (
+              <li key={diary.id}>
+                <DiaryItem
+                  date={diary.createAt?.split("T")[0]}
+                  content={diary.content}
+                  tags={diary.emotionTags || []}
+                  message={diary.aiMessage || ""}
+                  onDelete={() => handleDelete(diary.id)}
+                />
+              </li>
+            ))}
+          </ul>
+
+          {loading && (
+            <div className="has-text-centered mt-4">
+              <p className="has-text-grey-light">로딩 중...</p>
+            </div>
+          )}
+
+          {!loading && hasNextPage && (
+            <div className="has-text-centered mt-5">
+              <button
+                className="button is-link is-light is-rounded"
+                onClick={handleLoadMore}
+              >
+                ⬇️ 더 보기
+              </button>
+            </div>
+          )}
+
+          {!loading && !hasNextPage && filtered.length > 0 && (
+            <div className="has-text-centered mt-5">
+              <p className="has-text-grey-light">더 이상 일기가 없습니다.</p>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

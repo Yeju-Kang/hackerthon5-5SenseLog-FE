@@ -1,13 +1,15 @@
-// src/api/diaryApi.js
-import axios from "./axiosInstance"; // 이미 세팅된 인스턴스가 있다면
+import axios from "./axiosInstance";
 
-export const createDiary = async (userId, diaryRequestDto) => {
-  console.log("userId", userId);
-  console.log("diaryRequestDto", diaryRequestDto);
-  const response = await axios.post(
-    `/api/diaries?userId=${userId}`,
-    diaryRequestDto
-  );
-  console.log("response", response);
-  return response;
+export const createDiary = async (diaryRequestDto) => {
+  const userId = localStorage.getItem("userId");
+  return await axios.post("/api/diaries", diaryRequestDto, {
+    params: { userId },
+  });
+};
+
+export const fetchDiaryList = async (page = 0, size = 20) => {
+  const userId = localStorage.getItem("userId");
+  return await axios.get("/api/diaries/mine", {
+    params: { userId, page, size },
+  });
 };

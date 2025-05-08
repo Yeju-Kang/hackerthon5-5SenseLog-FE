@@ -9,7 +9,7 @@ const DiaryItem = ({
   message,
   onDelete,
   isToday = false,
-  isPrivate = false,
+  isPrivate = true,
 }) => {
   return (
     <div className="diary-card box">

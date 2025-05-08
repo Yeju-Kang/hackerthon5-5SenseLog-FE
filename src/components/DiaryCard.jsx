@@ -3,6 +3,7 @@ import EmotionReactionButton from "./EmotionReactionButton";
 import "./DiaryCard.scss";
 
 const DiaryCard = ({ diary }) => {
+  const date = diary.createAt.split("T")[0];
   return (
     <div className="diary-card box">
       <div className="diary-header is-flex is-justify-content-space-between">
@@ -14,7 +15,7 @@ const DiaryCard = ({ diary }) => {
             </span>
           </span>
           <div className="tags mt-2">
-            {diary.tags.map((tag) => (
+            {diary.tags?.map((tag) => (
               <span key={tag} className="tag is-light is-rounded">
                 #{tag}
               </span>
@@ -23,7 +24,7 @@ const DiaryCard = ({ diary }) => {
         </div>
         <span className="date icon-text">
           <span className="icon">🗓️</span>
-          <span>{diary.date}</span>
+          <span>{date}</span>
         </span>
       </div>
 

@@ -1,7 +1,7 @@
-// src/api/diaryLikes.js
-import axios from "./axiosInstance"; // 이미 세팅된 인스턴스가 있다면
+import axios from "./axiosInstance";
 
-export const submitDiaryEmotion = async (diaryId, userId, emotion) => {
+export const submitDiaryEmotion = async (diaryId, emotion) => {
+  const userId = localStorage.getItem("userId");
   const response = await axios.post(`/api/diaries/${diaryId}/likes`, null, {
     params: { userId, emotion },
   });

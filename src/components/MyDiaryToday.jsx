@@ -19,11 +19,11 @@ const MyDiaryToday = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [emotionTags, setEmotionTags] = useState([]);
   const [comfortMessage, setComfortMessage] = useState("");
-  const [isPrivate, setIsPrivate] = useState(false);
+  const [isPrivate, setIsPrivate] = useState(true); // true: 나만 보기, false: 전체 공개
 
   const handleSubmit = async () => {
     try {
-      const userId = 4;
+      const userId = 4; // 또는 localStorage.getItem("userId")
       const diaryRequest = { content: diaryContent, isPrivate };
       console.log("diaryRequest", diaryRequest);
       await createDiary(userId, diaryRequest);
@@ -63,7 +63,7 @@ const MyDiaryToday = () => {
           isPrivate={isPrivate}
         />
         <p className="mt-3 is-size-7 has-text-grey">
-          공개 설정: {isPrivate === false ? "전체 공개" : "나만 보기"}
+          공개 설정: {isPrivate ? "나만 보기" : "전체 공개"}
         </p>
       </div>
     );
@@ -86,17 +86,22 @@ const MyDiaryToday = () => {
           🔓 이 일기를 공유하고 싶으신가요?
         </p>
         <div className="buttons has-addons">
-          {[true, false].map((option) => (
-            <button
-              key={option}
-              className={`button ${
-                isPrivate === option ? "is-light" : "is-link is-selected"
-              }`}
-              onClick={() => setIsPrivate(option)}
-            >
-              {option === true ? "나만 보기" : "전체 공개"}
-            </button>
-          ))}
+          <button
+            className={`button ${
+              isPrivate ? "is-link is-selected" : "is-light"
+            }`}
+            onClick={() => setIsPrivate(true)}
+          >
+            나만 보기
+          </button>
+          <button
+            className={`button ${
+              !isPrivate ? "is-link is-selected" : "is-light"
+            }`}
+            onClick={() => setIsPrivate(false)}
+          >
+            전체 공개
+          </button>
         </div>
       </div>
 

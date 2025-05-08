@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { login } from "../../api/auth";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -12,22 +13,14 @@ function LoginPage() {
     setErrorMsg("");
 
     try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // 세션 쿠키 유지
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        navigate("/diary"); // 로그인 성공 시 다이어리 페이지로 이동
-      } else {
-        setErrorMsg("이메일 또는 비밀번호가 잘못되었습니다.");
-      }
+      await login(email, password); // ✅ API 함수 호출
+      navigate("/my-space"); // ✅ 로그인 성공 시 이동
     } catch (err) {
-      setErrorMsg("서버 오류가 발생했습니다.");
+      if (err.response?.status === 401) {
+        setErrorMsg("이메일 또는 비밀번호가 잘못되었습니다.");
+      } else {
+        setErrorMsg("서버 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -55,7 +48,7 @@ function LoginPage() {
             <div className="control">
               <input
                 className="input"
-                P
+                type="password" // ✅ 수정
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
