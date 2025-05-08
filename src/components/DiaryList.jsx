@@ -1,11 +1,11 @@
-import React from "react";
-import "./DiaryList.scss";
+import React, { useState } from "react";
+import DiaryItem from "./DiaryItem";
+import EmotionFilter from "./EmotionFilter"; // 필터 컴포넌트 불러오기
 
-const mockDiaries = [
+const initialMockDiaries = [
   {
     id: 1,
     date: "2025-05-09",
-    emotion: "😄",
     content: "오늘 햇살이 따뜻해서 기분이 좋았어!",
     tags: ["기쁨", "감사"],
     message: "오늘 하루를 따뜻하게 느끼셨군요. 그런 날은 오래 기억에 남아요 ☀️",
@@ -13,7 +13,6 @@ const mockDiaries = [
   {
     id: 2,
     date: "2025-05-08",
-    emotion: "😔",
     content: "너무 바빠서 정신이 하나도 없었어.",
     tags: ["피곤함", "불안"],
     message:
@@ -22,29 +21,36 @@ const mockDiaries = [
 ];
 
 const DiaryList = () => {
+  const [diaries, setDiaries] = useState(initialMockDiaries);
+  const [selectedTag, setSelectedTag] = useState(null);
+
+  const handleDelete = (id) => {
+    if (window.confirm("정말 삭제하시겠어요?")) {
+      setDiaries((prev) => prev.filter((diary) => diary.id !== id));
+    }
+  };
+
+  const filteredDiaries = selectedTag
+    ? diaries.filter((d) => d.tags.includes(selectedTag))
+    : diaries;
+
   return (
     <div className="diary-list-wrapper">
-      {mockDiaries.length === 0 ? (
+      <EmotionFilter selectedTag={selectedTag} onSelect={setSelectedTag} />
+
+      {filteredDiaries.length === 0 ? (
         <p className="has-text-grey">작성된 일기가 없습니다.</p>
       ) : (
         <ul className="diary-list">
-          {mockDiaries.map((diary) => (
-            <li key={diary.id} className="diary-card box">
-              <div className="diary-header">
-                <span className="diary-date">📅 {diary.date}</span>
-                <span className="diary-emotion">{diary.emotion}</span>
-              </div>
-              <p className="diary-content">{diary.content}</p>
-
-              <div className="tags mt-3">
-                {diary.tags.map((tag) => (
-                  <span key={tag} className="tag is-link">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-
-              <p className="comfort mt-4">💬 {diary.message}</p>
+          {filteredDiaries.map((diary) => (
+            <li key={diary.id}>
+              <DiaryItem
+                date={diary.date}
+                content={diary.content}
+                tags={diary.tags}
+                message={diary.message}
+                onDelete={() => handleDelete(diary.id)}
+              />
             </li>
           ))}
         </ul>

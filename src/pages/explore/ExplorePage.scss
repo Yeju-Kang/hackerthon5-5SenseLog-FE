@@ -1,0 +1,77 @@
+.explore-page {
+  background-color: #fdfcfa;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+
+  .title {
+    font-family: "Helvetica Neue", sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #a1c3d1;
+    margin-bottom: 1rem;
+  }
+
+  .section-block {
+    margin-top: 2rem;
+
+    .subtitle {
+      color: #4b3d5c;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .diary-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+  }
+
+  .has-text-grey {
+    font-size: 0.95rem;
+    color: #999;
+  }
+
+  .tabs.custom-tabs {
+    border: 1px solid #dbdbdb;
+    border-radius: 6px;
+    background-color: #fff;
+    overflow: hidden;
+
+    ul {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      li {
+        flex: 1;
+        text-align: center;
+        border-right: 1px solid #dbdbdb;
+
+        &:last-child {
+          border-right: none;
+        }
+
+        &.is-active {
+          background-color: #f5f5f5;
+        }
+
+        .tab-button {
+          display: block;
+          width: 100%;
+          padding: 0.75rem 0;
+          border: none;
+          background: none;
+          font-size: 1rem;
+          color: #363636;
+          font-weight: 500;
+
+          &:hover {
+            background-color: #f0f0f0;
+          }
+        }
+      }
+    }
+  }
+}
