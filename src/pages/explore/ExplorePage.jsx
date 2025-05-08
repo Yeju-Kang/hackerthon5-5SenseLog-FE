@@ -2,15 +2,22 @@
 import React, { useState, useEffect } from "react";
 import EmotionFilter from "../../components/EmotionFilter";
 import DiaryCard from "../../components/DiaryCard";
+import "./ExplorePage.scss";
+
+const TABS = [
+  { id: "similar", label: "📌 함께 느낀 감정들" },
+  { id: "opposite", label: "🪞 다른 마음의 이야기" },
+  { id: "all", label: "🌍 모두의 일기장" },
+];
 
 const ExplorePage = () => {
+  const [activeTab, setActiveTab] = useState("similar");
+  const [selectedTag, setSelectedTag] = useState(null);
   const [allDiaries, setAllDiaries] = useState([]);
   const [similarDiaries, setSimilarDiaries] = useState([]);
   const [oppositeDiaries, setOppositeDiaries] = useState([]);
-  const [selectedTag, setSelectedTag] = useState(null);
 
   useEffect(() => {
-    // ⚠️ API 연동 전 mock 데이터
     const mock = [
       {
         id: 1,
@@ -36,59 +43,85 @@ const ExplorePage = () => {
     ];
 
     setAllDiaries(mock);
-    setSimilarDiaries(mock.filter((d) => d.tags.includes("불안"))); // ✨ 내 감정 기준
+    setSimilarDiaries(mock.filter((d) => d.tags.includes("불안")));
     setOppositeDiaries(mock.filter((d) => d.tags.includes("기쁨")));
   }, []);
 
-  const filteredDiaries = selectedTag
+  const filteredAll = selectedTag
     ? allDiaries.filter((d) => d.tags.includes(selectedTag))
     : allDiaries;
 
   return (
     <section className="section explore-page">
       <div className="container">
-        <h1 className="title is-4 has-text-primary">공감의 공간</h1>
-
-        <EmotionFilter selected={selectedTag} onSelect={setSelectedTag} />
-
-        <div className="section-block">
-          <h2 className="subtitle is-5">📌 나와 비슷한 감정의 사람들</h2>
-          {similarDiaries.length > 0 ? (
-            <div className="diary-list">
-              {similarDiaries.map((d) => (
-                <DiaryCard key={d.id} diary={d} />
-              ))}
-            </div>
-          ) : (
-            <p className="has-text-grey">
-              비슷한 감정을 가진 일기가 아직 없어요.
-            </p>
-          )}
+        {/* 탭 메뉴 */}
+        <div className="tabs is-toggle is-fullwidth is-rounded custom-tabs">
+          <ul>
+            {TABS.map((tab) => (
+              <li
+                key={tab.id}
+                className={activeTab === tab.id ? "is-active" : ""}
+              >
+                <button
+                  className="tab-button"
+                  onClick={() => setActiveTab(tab.id)}
+                >
+                  <span>{tab.label}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <div className="section-block">
-          <h2 className="subtitle is-5">🪞 나와 반대 감정의 사람들</h2>
-          {oppositeDiaries.length > 0 ? (
-            <div className="diary-list">
-              {oppositeDiaries.map((d) => (
-                <DiaryCard key={d.id} diary={d} />
-              ))}
-            </div>
-          ) : (
-            <p className="has-text-grey">반대 감정의 일기가 아직 없어요.</p>
-          )}
-        </div>
+        {/* 필터 (전체 탭에서만 노출) */}
+        {activeTab === "all" && (
+          <EmotionFilter selected={selectedTag} onSelect={setSelectedTag} />
+        )}
 
-        <div className="section-block">
-          <h2 className="subtitle is-5">🌍 오늘의 전체 일기</h2>
-          {filteredDiaries.length > 0 ? (
-            <div className="diary-list">
-              {filteredDiaries.map((d) => (
-                <DiaryCard key={d.id} diary={d} />
-              ))}
-            </div>
-          ) : (
-            <p className="has-text-grey">일기가 없습니다.</p>
+        {/* 콘텐츠 영역 */}
+        <div className="tab-content mt-5">
+          {activeTab === "similar" && (
+            <>
+              {similarDiaries.length > 0 ? (
+                <div className="diary-list">
+                  {similarDiaries.map((d) => (
+                    <DiaryCard key={d.id} diary={d} />
+                  ))}
+                </div>
+              ) : (
+                <p className="has-text-grey">
+                  비슷한 감정을 가진 일기가 아직 없어요.
+                </p>
+              )}
+            </>
+          )}
+
+          {activeTab === "opposite" && (
+            <>
+              {oppositeDiaries.length > 0 ? (
+                <div className="diary-list">
+                  {oppositeDiaries.map((d) => (
+                    <DiaryCard key={d.id} diary={d} />
+                  ))}
+                </div>
+              ) : (
+                <p className="has-text-grey">반대 감정의 일기가 아직 없어요.</p>
+              )}
+            </>
+          )}
+
+          {activeTab === "all" && (
+            <>
+              {filteredAll.length > 0 ? (
+                <div className="diary-list">
+                  {filteredAll.map((d) => (
+                    <DiaryCard key={d.id} diary={d} />
+                  ))}
+                </div>
+              ) : (
+                <p className="has-text-grey">일기가 없습니다.</p>
+              )}
+            </>
           )}
         </div>
       </div>
