@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import DiaryItem from "./DiaryItem";
+import EmotionFilter from "./EmotionFilter"; // 필터 컴포넌트 불러오기
 
 const initialMockDiaries = [
   {
@@ -21,6 +22,7 @@ const initialMockDiaries = [
 
 const DiaryList = () => {
   const [diaries, setDiaries] = useState(initialMockDiaries);
+  const [selectedTag, setSelectedTag] = useState(null);
 
   const handleDelete = (id) => {
     if (window.confirm("정말 삭제하시겠어요?")) {
@@ -28,13 +30,19 @@ const DiaryList = () => {
     }
   };
 
+  const filteredDiaries = selectedTag
+    ? diaries.filter((d) => d.tags.includes(selectedTag))
+    : diaries;
+
   return (
     <div className="diary-list-wrapper">
-      {diaries.length === 0 ? (
+      <EmotionFilter selectedTag={selectedTag} onSelect={setSelectedTag} />
+
+      {filteredDiaries.length === 0 ? (
         <p className="has-text-grey">작성된 일기가 없습니다.</p>
       ) : (
         <ul className="diary-list">
-          {diaries.map((diary) => (
+          {filteredDiaries.map((diary) => (
             <li key={diary.id}>
               <DiaryItem
                 date={diary.date}
