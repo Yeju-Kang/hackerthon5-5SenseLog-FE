@@ -20,7 +20,8 @@ const MySpacePage = () => {
 
   const loadTodayDiary = async () => {
     try {
-      const today = new Date().toISOString().split("T")[0];
+      const offsetDate = new Date(Date.now() + 9 * 60 * 60 * 1000);
+      const today = offsetDate.toISOString().split("T")[0];
       const res = await fetchDiaryByDay(today);
       const todayList = res.data?.data || [];
       setTodayData(todayList.length > 0 ? todayList[0] : null);
