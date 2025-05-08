@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import "./DiaryList.scss";
 
-const mockDiaries = [
+const initialMockDiaries = [
   {
     id: 1,
     date: "2025-05-09",
@@ -22,17 +22,30 @@ const mockDiaries = [
 ];
 
 const DiaryList = () => {
+  const [diaries, setDiaries] = useState(initialMockDiaries);
+
+  const handleDelete = (id) => {
+    if (window.confirm("정말 삭제하시겠어요?")) {
+      setDiaries((prev) => prev.filter((diary) => diary.id !== id));
+    }
+  };
+
   return (
     <div className="diary-list-wrapper">
-      {mockDiaries.length === 0 ? (
+      {diaries.length === 0 ? (
         <p className="has-text-grey">작성된 일기가 없습니다.</p>
       ) : (
         <ul className="diary-list">
-          {mockDiaries.map((diary) => (
+          {diaries.map((diary) => (
             <li key={diary.id} className="diary-card box">
               <div className="diary-header">
                 <span className="diary-date">📅 {diary.date}</span>
-                <span className="diary-emotion">{diary.emotion}</span>
+                <button
+                  className="delete-button button is-small is-danger is-light"
+                  onClick={() => handleDelete(diary.id)}
+                >
+                  삭제
+                </button>
               </div>
               <p className="diary-content">{diary.content}</p>
 

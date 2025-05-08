@@ -1,4 +1,3 @@
-// MyDiaryToday.jsx
 import React, { useState } from "react";
 
 const mockExtractEmotions = (content) => {
@@ -20,6 +19,7 @@ const MyDiaryToday = () => {
   const [submitted, setSubmitted] = useState(false);
   const [emotions, setEmotions] = useState([]);
   const [message, setMessage] = useState("");
+  const [visibility, setVisibility] = useState("private"); // 💡 공개 여부 추가
 
   const handleSubmit = () => {
     const extracted = mockExtractEmotions(content);
@@ -29,12 +29,30 @@ const MyDiaryToday = () => {
     setSubmitted(true);
   };
 
+  const handleDelete = () => {
+    if (window.confirm("오늘의 일기를 삭제하시겠어요?")) {
+      setContent("");
+      setEmotions([]);
+      setMessage("");
+      setSubmitted(false);
+    }
+  };
+
   if (submitted) {
     return (
       <div className="my-diary-today">
         <h2 className="title is-5">오늘의 일기</h2>
         <div className="box">
-          <p>{content}</p>
+          <div className="diary-header is-flex is-justify-content-space-between">
+            <p>{content}</p>
+            <button
+              className="button is-danger is-light is-small"
+              onClick={handleDelete}
+            >
+              삭제
+            </button>
+          </div>
+
           <div className="tags mt-3">
             {emotions.map((tag) => (
               <span key={tag} className="tag is-link">
@@ -43,6 +61,9 @@ const MyDiaryToday = () => {
             ))}
           </div>
           <p className="comfort mt-4">💬 {message}</p>
+          <p className="mt-3 is-size-7 has-text-grey">
+            공개 설정: {visibility === "public" ? "전체 공개" : "나만 보기"}
+          </p>
         </div>
       </div>
     );
@@ -58,9 +79,37 @@ const MyDiaryToday = () => {
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <button className="button is-link mt-3" onClick={handleSubmit}>
-        작성 완료
-      </button>
+
+      {/* 🔓 공개 설정 */}
+      <div className="mt-4">
+        <p className="has-text-weight-semibold mb-2">
+          🔓 이 일기를 공유하고 싶으신가요?
+        </p>
+        <div className="buttons has-addons">
+          <button
+            className={`button ${
+              visibility === "private" ? "is-link is-selected" : "is-light"
+            }`}
+            onClick={() => setVisibility("private")}
+          >
+            나만 보기
+          </button>
+          <button
+            className={`button ${
+              visibility === "public" ? "is-link is-selected" : "is-light"
+            }`}
+            onClick={() => setVisibility("public")}
+          >
+            전체 공개
+          </button>
+        </div>
+      </div>
+
+      <div className="has-text-right mt-4">
+        <button className="button is-link" onClick={handleSubmit}>
+          작성 완료
+        </button>
+      </div>
     </div>
   );
 };
