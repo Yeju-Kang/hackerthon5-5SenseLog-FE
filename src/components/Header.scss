@@ -39,4 +39,22 @@
     color: #7b4db8;
     font-weight: 700;
   }
+
+  .logout-btn {
+    margin-left: auto;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 20px;
+    background-color: #e4d6f8; // 연보라
+    color: #5e3a8c; // 포인트 색상
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+    &:hover {
+      background-color: #d5c3f0;
+    }
+  }
 }

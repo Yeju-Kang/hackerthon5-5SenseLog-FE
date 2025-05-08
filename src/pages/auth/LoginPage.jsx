@@ -14,7 +14,7 @@ function LoginPage() {
 
     try {
       await login(email, password); // ✅ API 함수 호출
-      navigate("/my-space"); // ✅ 로그인 성공 시 이동
+      navigate("/my"); // ✅ 로그인 성공 시 이동
     } catch (err) {
       if (err.response?.status === 401) {
         setErrorMsg("이메일 또는 비밀번호가 잘못되었습니다.");

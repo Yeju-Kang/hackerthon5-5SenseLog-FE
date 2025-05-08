@@ -7,25 +7,27 @@ const DiaryList = ({ diaries = [], hasNextPage, onLoadMore }) => {
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 필터링 처리
   useEffect(() => {
+    const sorted = [...diaries].sort(
+      (a, b) => new Date(b.createAt) - new Date(a.createAt)
+    );
+
     if (selectedTag) {
-      setFiltered(diaries.filter((d) => d.emotionTags?.includes(selectedTag)));
+      setFiltered(sorted.filter((d) => d.tag?.includes(selectedTag)));
     } else {
-      setFiltered(diaries);
+      setFiltered(sorted);
     }
   }, [diaries, selectedTag]);
 
-  const handleDelete = (id) => {
-    if (window.confirm("정말 삭제하시겠어요?")) {
-      setFiltered((prev) => prev.filter((d) => d.id !== id));
-    }
-  };
-
   const handleLoadMore = async () => {
     setLoading(true);
-    await onLoadMore(); // 부모에서 전달된 fetch 함수
+    await onLoadMore();
     setLoading(false);
+  };
+
+  // 삭제 시 해당 항목 제거
+  const handleDiaryDeleted = (id) => {
+    setFiltered((prev) => prev.filter((d) => d.id !== id));
   };
 
   return (
@@ -39,13 +41,7 @@ const DiaryList = ({ diaries = [], hasNextPage, onLoadMore }) => {
           <ul className="diary-list">
             {filtered.map((diary) => (
               <li key={diary.id}>
-                <DiaryItem
-                  date={diary.createAt?.split("T")[0]}
-                  content={diary.content}
-                  tags={diary.emotionTags || []}
-                  message={diary.aiMessage || ""}
-                  onDelete={() => handleDelete(diary.id)}
-                />
+                <DiaryItem diary={diary} onDeleted={handleDiaryDeleted} />
               </li>
             ))}
           </ul>

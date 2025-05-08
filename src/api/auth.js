@@ -6,13 +6,15 @@ export const login = async (email, password) => {
     { email, password },
     { withCredentials: true }
   );
-
-  const { userId } = res.data;
+  console.log("res", res);
+  const { userId } = res.data.data;
+  console.log("userId", res);
+  console.log("userId", userId);
   localStorage.setItem("userId", userId);
   return res;
 };
 
 export const logout = async () => {
   await axios.post("/api/auth/logout", {}, { withCredentials: true });
-  localStorage.removeItem("userId");
+  console.log("userId before remove:", localStorage.getItem("userId"));
 };
