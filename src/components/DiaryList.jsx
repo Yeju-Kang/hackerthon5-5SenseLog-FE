@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import "./DiaryList.scss";
+import DiaryItem from "./DiaryItem";
 
 const initialMockDiaries = [
   {
     id: 1,
     date: "2025-05-09",
-    emotion: "😄",
     content: "오늘 햇살이 따뜻해서 기분이 좋았어!",
     tags: ["기쁨", "감사"],
     message: "오늘 하루를 따뜻하게 느끼셨군요. 그런 날은 오래 기억에 남아요 ☀️",
@@ -13,7 +12,6 @@ const initialMockDiaries = [
   {
     id: 2,
     date: "2025-05-08",
-    emotion: "😔",
     content: "너무 바빠서 정신이 하나도 없었어.",
     tags: ["피곤함", "불안"],
     message:
@@ -37,27 +35,14 @@ const DiaryList = () => {
       ) : (
         <ul className="diary-list">
           {diaries.map((diary) => (
-            <li key={diary.id} className="diary-card box">
-              <div className="diary-header">
-                <span className="diary-date">📅 {diary.date}</span>
-                <button
-                  className="delete-button button is-small is-danger is-light"
-                  onClick={() => handleDelete(diary.id)}
-                >
-                  삭제
-                </button>
-              </div>
-              <p className="diary-content">{diary.content}</p>
-
-              <div className="tags mt-3">
-                {diary.tags.map((tag) => (
-                  <span key={tag} className="tag is-link">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-
-              <p className="comfort mt-4">💬 {diary.message}</p>
+            <li key={diary.id}>
+              <DiaryItem
+                date={diary.date}
+                content={diary.content}
+                tags={diary.tags}
+                message={diary.message}
+                onDelete={() => handleDelete(diary.id)}
+              />
             </li>
           ))}
         </ul>
