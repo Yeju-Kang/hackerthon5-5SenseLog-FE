@@ -16,7 +16,6 @@ const MySpacePage = () => {
   return (
     <section className="section my-space-page">
       <div className="container">
-        {/* Bulma 탭 UI 유지 */}
         <div className="tabs is-toggle is-fullwidth is-rounded custom-tabs">
           <ul>
             {TABS.map((tab) => (

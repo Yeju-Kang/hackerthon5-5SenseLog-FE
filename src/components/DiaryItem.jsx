@@ -9,7 +9,7 @@ const DiaryItem = ({
   message,
   onDelete,
   isToday = false,
-  visibility = "private",
+  isPrivate = false,
 }) => {
   return (
     <div className="diary-card box">
@@ -39,7 +39,7 @@ const DiaryItem = ({
       </p>
       {isToday && (
         <p className="mt-3 is-size-7 has-text-grey">
-          공개 설정: {visibility === "public" ? "전체 공개" : "나만 보기"}
+          공개 설정: {isPrivate === false ? "전체 공개" : "나만 보기"}
         </p>
       )}
     </div>
