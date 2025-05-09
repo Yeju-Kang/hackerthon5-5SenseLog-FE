@@ -69,8 +69,8 @@ const ExplorePage = () => {
           const myRes = await fetchDiaryByDay(today);
           const myDiaryList = myRes.data.data;
 
-          if (myDiaryList.length > 0 && myDiaryList[0].tag) {
-            const tag = myDiaryList[0].tag;
+          if (myDiaryList) {
+            const tag = myDiaryList.tag;
             const res = await fetchAllTodayDiariesByTag(tag);
             setSimilarDiaries(res.data.data);
           } else {
@@ -84,8 +84,8 @@ const ExplorePage = () => {
           const myRes = await fetchDiaryByDay(today);
           const myDiaryList = myRes.data.data;
 
-          if (myDiaryList.length > 0 && myDiaryList[0].tag) {
-            const oppositeTag = getOppositeTag(myDiaryList[0].tag);
+          if (myDiaryList) {
+            const oppositeTag = getOppositeTag(myDiaryList.tag);
             const res = await fetchAllTodayDiariesByTag(oppositeTag);
             setOppositeDiaries(res.data.data);
           } else {
