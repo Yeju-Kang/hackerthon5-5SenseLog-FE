@@ -18,3 +18,12 @@ export const logout = async () => {
   await axios.post("/api/auth/logout", {}, { withCredentials: true });
   console.log("userId before remove:", localStorage.getItem("userId"));
 };
+
+export const signup = async ({ email, nickname, password }) => {
+  const response = await axios.post("/api/auth/join", {
+    email,
+    nickname,
+    password,
+  });
+  return response.data;
+};
