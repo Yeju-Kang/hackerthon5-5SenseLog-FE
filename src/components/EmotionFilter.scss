@@ -8,5 +8,10 @@
     &:hover {
       background-color: #e6e6f0;
     }
+
+    &.active {
+      background-color: #e4d6f8;
+      color: #5e3a8c;
+    }
   }
 }

@@ -10,9 +10,7 @@ const EmotionFilter = ({ selectedTag, onSelect }) => {
         {EMOTION_TAGS.map((tag) => (
           <span
             key={tag}
-            className={`tag emotion-tag ${
-              selectedTag === tag ? "is-link is-light" : ""
-            }`}
+            className={`tag emotion-tag ${selectedTag === tag ? "active" : ""}`}
             onClick={() => onSelect(selectedTag === tag ? null : tag)}
           >
             #{tag}
