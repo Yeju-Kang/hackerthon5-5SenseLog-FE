@@ -6,9 +6,16 @@
   -webkit-backdrop-filter: blur(10px);
   padding: 1.2rem 2rem;
   display: flex;
-  justify-content: space-between;
+  justify-content: center; // 가운데 기준 정렬
   align-items: center;
   background-color: #fdfcfa;
+  position: relative;
+}
+
+.nav-center-wrapper {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav-wrapper {
@@ -45,8 +52,8 @@
   padding: 6px 14px;
   border: none;
   border-radius: 20px;
-  background-color: #e4d6f8; // 연보라
-  color: #5e3a8c; // 포인트 색상
+  background-color: #e4d6f8;
+  color: #5e3a8c;
   font-weight: 500;
   font-size: 0.9rem;
   cursor: pointer;

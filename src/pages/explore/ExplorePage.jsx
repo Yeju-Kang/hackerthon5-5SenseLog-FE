@@ -126,7 +126,7 @@ const ExplorePage = () => {
         </div>
 
         {activeTab === "all" && (
-          <EmotionFilter selected={selectedTag} onSelect={setSelectedTag} />
+          <EmotionFilter selectedTag={selectedTag} onSelect={setSelectedTag} />
         )}
 
         <div className="tab-content mt-5">

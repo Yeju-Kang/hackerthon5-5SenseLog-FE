@@ -35,7 +35,10 @@ const DiaryCard = ({ diary }) => {
 
       {/* 👉 우측 정렬된 좋아요 버튼 */}
       <div className="like-button-wrapper is-flex is-justify-content-flex-end mt-4">
-        <EmotionReactionButton />
+        <EmotionReactionButton
+          diaryId={diary.id}
+          initialEmotion={diary.myEmoji}
+        />
       </div>
     </div>
   );

@@ -10,8 +10,10 @@ const emotions = [
   { id: "excited", emoji: "😁", label: "행복" },
 ];
 
-const EmotionReactionButton = ({ diaryId, userId, initialEmotion }) => {
+const EmotionReactionButton = ({ diaryId, initialEmotion }) => {
   const [selected, setSelected] = useState(null);
+
+  console.log("diaryId", diaryId);
 
   useEffect(() => {
     if (initialEmotion) {
@@ -23,8 +25,10 @@ const EmotionReactionButton = ({ diaryId, userId, initialEmotion }) => {
     const isSame = selected === emotionLabel;
     console.log("selected", selected);
 
+    console.log("emotionLabel", emotionLabel);
+
     try {
-      await submitDiaryEmotion(1, 1, isSame ? null : emotionLabel);
+      await submitDiaryEmotion(diaryId, isSame ? null : emotionLabel);
       setSelected(isSame ? null : emotionLabel);
     } catch (err) {
       console.error("감정 전송 실패:", err);
