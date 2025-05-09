@@ -14,13 +14,11 @@ export const fetchDiaryList = async (page = 0, size = 20) => {
 };
 
 export const fetchDiaryByDay = async (date) => {
-  return await axios.get("/api/diaries/day", {
+  return await axios.get("/api/diaries/mine/day", {
     params: { date },
   });
 };
 
 export const deleteDiary = async (diaryId) => {
-  return await axios.delete(`/api/diaries/${diaryId}`, {
-    withCredentials: true,
-  });
+  return await axios.delete(`/api/diaries/${diaryId}`, {});
 };

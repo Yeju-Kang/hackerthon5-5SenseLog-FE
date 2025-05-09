@@ -24,7 +24,8 @@ const MySpacePage = () => {
       const today = offsetDate.toISOString().split("T")[0];
       const res = await fetchDiaryByDay(today);
       const todayList = res.data?.data || [];
-      setTodayData(todayList.length > 0 ? todayList[0] : null);
+      console.log("todayList", todayList);
+      setTodayData(todayList ? todayList : null);
     } catch (error) {
       console.error("오늘 일기 조회 실패 ❌", error);
     }
