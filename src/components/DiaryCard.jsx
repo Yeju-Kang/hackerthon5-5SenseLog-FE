@@ -10,11 +10,11 @@ const DiaryCard = ({ diary }) => {
           <span className="icon-text">
             <span className="icon">👤</span>
             <span className="nickname has-text-weight-semibold">
-              {diary.nickname}
+              {diary.writerNickname}
             </span>
           </span>
           <div className="tags mt-2">
-            {diary.tags.map((tag) => (
+            {diary.subTags?.map((tag) => (
               <span key={tag} className="tag is-light is-rounded">
                 #{tag}
               </span>
@@ -23,7 +23,7 @@ const DiaryCard = ({ diary }) => {
         </div>
         <span className="date icon-text">
           <span className="icon">🗓️</span>
-          <span>{diary.date}</span>
+          <span>{diary.createAt.split("T")[0]}</span>
         </span>
       </div>
 
@@ -35,7 +35,10 @@ const DiaryCard = ({ diary }) => {
 
       {/* 👉 우측 정렬된 좋아요 버튼 */}
       <div className="like-button-wrapper is-flex is-justify-content-flex-end mt-4">
-        <EmotionReactionButton />
+        <EmotionReactionButton
+          diaryId={diary.id}
+          initialEmotion={diary.myEmoji}
+        />
       </div>
     </div>
   );

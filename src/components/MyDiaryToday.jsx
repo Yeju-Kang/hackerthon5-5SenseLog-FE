@@ -1,73 +1,60 @@
 import React, { useState } from "react";
 import DiaryItem from "./DiaryItem";
+import { createDiary } from "../api/diary";
+import { deleteDiary } from "../api/diary";
 
-const mockExtractEmotions = (content) => {
-  if (content.includes("기뻐") || content.includes("좋아"))
-    return ["기쁨", "감사"];
-  if (content.includes("힘들") || content.includes("피곤"))
-    return ["피곤함", "지침"];
-  return ["보통"];
-};
+const MyDiaryToday = ({ diary, onDeleted }) => {
+  const [diaryContent, setDiaryContent] = useState("");
+  const [isPrivate, setIsPrivate] = useState(true);
 
-const mockComfortMessage = (emotions) => {
-  if (emotions.includes("기쁨")) return "오늘도 당신 덕분에 세상이 밝아요.";
-  if (emotions.includes("피곤함")) return "오늘도 애썼어요. 푹 쉬어야 해요.";
-  return "마음 가는 대로 흘러가도 괜찮아요.";
-};
-
-const MyDiaryToday = () => {
-  const [content, setContent] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [emotions, setEmotions] = useState([]);
-  const [message, setMessage] = useState("");
-  const [visibility, setVisibility] = useState("private");
-
-  const handleSubmit = () => {
-    const extracted = mockExtractEmotions(content);
-    const comfort = mockComfortMessage(extracted);
-    setEmotions(extracted);
-    setMessage(comfort);
-    setSubmitted(true);
-  };
-
-  const handleDelete = () => {
-    if (window.confirm("오늘의 일기를 삭제하시겠어요?")) {
-      setContent("");
-      setEmotions([]);
-      setMessage("");
-      setSubmitted(false);
+  const handleSubmit = async () => {
+    try {
+      const diaryRequest = { content: diaryContent, isPrivate };
+      await createDiary(diaryRequest);
+      window.location.reload(); // 작성 후 새로고침
+    } catch (error) {
+      console.error(error);
+      alert("일기 저장 중 오류가 발생했습니다.");
     }
   };
 
-  if (submitted) {
-    const todayDate = new Date().toISOString().split("T")[0];
+  const handleDelete = async () => {
+    const confirmed = window.confirm("정말 삭제하시겠어요?");
+    if (!confirmed) return;
+
+    try {
+      const res = await deleteDiary(diary.id);
+      if (res.status === 200 || res.status === 204) {
+        if (onDeleted) onDeleted(); // ❗ 상태만 다시 불러오기
+      } else {
+        alert("삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("삭제 실패 ❌", error);
+      alert("삭제 중 오류가 발생했습니다.");
+    }
+  };
+
+  // ✅ 오늘 일기 존재하면 보여주기
+  if (diary && diary.id) {
     return (
       <div className="my-diary-today">
-        <DiaryItem
-          date={todayDate}
-          content={content}
-          tags={emotions}
-          message={message}
-          onDelete={handleDelete}
-          isToday={true}
-          visibility={visibility}
-        />
-        <p className="mt-3 is-size-7 has-text-grey">
-          공개 설정: {visibility === "public" ? "전체 공개" : "나만 보기"}
-        </p>
+        <DiaryItem diary={diary} />
       </div>
     );
   }
 
+  // ✅ 없으면 작성 UI
   return (
     <div className="my-diary-today">
       <h2 className="title is-5">✏️ 오늘의 일기를 작성해보세요</h2>
+
       <textarea
         className="textarea"
         placeholder="오늘의 기분이나 있었던 일을 50자 이내로 작성해주세요."
         maxLength={50}
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        value={diaryContent}
+        onChange={(e) => setDiaryContent(e.target.value)}
       />
 
       <div className="mt-4">
@@ -77,17 +64,17 @@ const MyDiaryToday = () => {
         <div className="buttons has-addons">
           <button
             className={`button ${
-              visibility === "private" ? "is-link is-selected" : "is-light"
+              isPrivate ? "is-link is-selected" : "is-light"
             }`}
-            onClick={() => setVisibility("private")}
+            onClick={() => setIsPrivate(true)}
           >
             나만 보기
           </button>
           <button
             className={`button ${
-              visibility === "public" ? "is-link is-selected" : "is-light"
+              !isPrivate ? "is-link is-selected" : "is-light"
             }`}
-            onClick={() => setVisibility("public")}
+            onClick={() => setIsPrivate(false)}
           >
             전체 공개
           </button>

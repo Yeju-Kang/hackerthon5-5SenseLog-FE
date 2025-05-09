@@ -1,50 +1,29 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/auth/LoginPage";
-import MySpacePage from "./pages/myspace/MySpacePage";
-// import WriteDiaryPage from "./pages/myspace/WriteDiaryPage";
-// import MyDiaryListPage from "./pages/myspace/MyDiaryListPage";
-// import EmotionGraphPage from "./pages/mypage/EmotionGraphPage";
+import MyPage from "./pages/myspace/MySpacePage";
 import ExplorePage from "./pages/explore/ExplorePage";
-// import ExploreTagPage from "./pages/explore/ExploreTagPage";
-// import SimilarEmotionPage from "./pages/explore/SimilarEmotionPage";
-// import NotFoundPage from "./pages/common/NotFoundPage";
-import Header from "./components/Header";
+import SignUpPage from "./pages/auth/SignupPage";
 
-function LayoutWithConditionalHeader({ children }) {
-  const location = useLocation();
-  const hideHeader = location.pathname === "/"; // 로그인 페이지에서는 헤더 숨김
-
-  return (
-    <>
-      {!hideHeader && <Header />}
-      {children}
-    </>
-  );
-}
+const hasAccessToken = () => {
+  return document.cookie
+    .split("; ")
+    .some((row) => row.startsWith("accessToken="));
+};
 
 function App() {
-  return (
-    <BrowserRouter>
-      <LayoutWithConditionalHeader>
-        <Routes>
-          {/* 로그인 */}
-          <Route path="/" element={<LoginPage />} />
-          {/* 나만의 공간 */}
-          <Route path="/my" element={<MySpacePage />} />
-          {/* <Route path="/write" element={<WriteDiaryPage />} />
-          <Route path="/my-diaries" element={<MyDiaryListPage />} />
-          <Route path="/emotion-graph" element={<EmotionGraphPage />} />
+  const isLoggedIn = hasAccessToken();
 
-          {/* 공감의 공간 */}
-          <Route path="/explore" element={<ExplorePage />} />
-          {/* <Route path="/explore/tag/:tagName" element={<ExploreTagPage />} />
-          <Route path="/explore/similar" element={<SimilarEmotionPage />} />
-          <Route path="/explore/opposite" element={<OppositeEmotionPage />} /> */}
-          {/* 예외 처리 */}
-          {/* <Route path="*" element={<NotFoundPage />} /> */} */}
-        </Routes>
-      </LayoutWithConditionalHeader>
-    </BrowserRouter>
+  return (
+    <Routes>
+      <Route
+        path="/"
+        element={isLoggedIn ? <Navigate to="/my" replace /> : <LoginPage />}
+      />
+      <Route path="/signup" element={<SignUpPage />} />
+      <Route path="/my" element={<MyPage />} />
+      <Route path="/explore" element={<ExplorePage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
