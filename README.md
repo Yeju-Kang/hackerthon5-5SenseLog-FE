@@ -1,70 +1,78 @@
-# Getting Started with Create React App
+# 감정 분석 기반 일기 웹 서비스 - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Main Preview](./assets/screenshots/main_page.png)
 
-## Available Scripts
+> 📝 예비창업패키지 K-Startup 심사용  
+>  
+> 사용자가 하루의 감정을 기록하고, AI가 감정 키워드를 분석해 맞춤 위로/공감 문구를 제공하는 감성 일기장 서비스입니다.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## 💡 주요 기능 소개
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### ✍️ 1. 오늘의 일기 작성
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![Diary Page](./assets/screenshots/diary_page.png)
 
-### `npm test`
+- 하루의 감정이나 사건을 작성 (50자 제한)
+- 일기 저장 시 감정 키워드 자동 추출
+- 감정 키워드 기반 맞춤 공감 & 위로 문구 제공
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+### 🔐 2. 공개 범위 선택 기능
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Visibility Setting](./assets/screenshots/visibility_setting.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- 일기 작성 시 **전체 공개 / 나만 보기** 선택 가능
+- 전체 공개 시 Explore 페이지에서 다른 사용자들과 공유
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+### 📰 3. 일기 목록 조회
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+![Diary List](./assets/screenshots/diary_list.png)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- 사용자가 작성한 일기 목록을 날짜순으로 확인 가능
+- 다른 사용자의 공개 일기 조회 기능 (Explore)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+---
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### ❤️ 4. 공감 / 리액션 기능
 
-## Learn More
+![Reaction](./assets/screenshots/reaction.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- 공개 일기에 좋아요, 공감 이모지 반응 기능 제공
+- 사용자 간 긍정적 소통 유도
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🛠️ 기술 스택
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+| 영역 | 기술 |
+|------|------|
+| 프론트엔드 | React 17, Redux, SCSS, React Router v5 |
+| 상태 관리 | Redux Toolkit |
+| API 연동 | Axios, Spring Boot Backend |
+| 디자인 | MUI (Material UI), Custom SCSS |
+| 이미지 업로드 | AWS S3 Presigned URL 방식 |
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🎯 개발 포인트
 
-### Making a Progressive Web App
+- **기능 중심 폴더 구조(features)** 로 효율적 개발
+- **Redux로 사용자 상태 및 일기 데이터 통합 관리**
+- **AI 감정 분석 기능과 위로 문구 자동 추천**
+- **디자인 퍼블리셔 없이 개발자가 직접 고급 디자인 제작**
+- **MVP 서비스 런칭을 목표로 실제 서비스 수준으로 개발**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## 💻 실행 방법
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```bash
+git clone https://github.com/yeju/diary-web-frontend.git
+cd diary-web-frontend
+npm install
+npm start
