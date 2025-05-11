@@ -2,8 +2,6 @@
 
 ![Main Preview](./assets/screenshots/main_page.png)
 
-> 📝 예비창업패키지 K-Startup 심사용  
->  
 > 사용자가 하루의 감정을 기록하고, AI가 감정 키워드를 분석해 맞춤 위로/공감 문구를 제공하는 감성 일기장 서비스입니다.
 
 ---
